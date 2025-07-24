@@ -30,7 +30,7 @@ public class Productos {
     @NotBlank(message = "Product Name Should be specified")
     @Size(min=3,max=30, message="The product name # of characters has to be between 3 to 30 chars.")
     @Column(name="product_name", length=30)
-    private String productName;
+    private String nombre;
     //price field
     @Positive(message = "Price must be positive")
     @Column(name="product_price")

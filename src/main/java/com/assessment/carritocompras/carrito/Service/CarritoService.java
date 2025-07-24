@@ -1,6 +1,8 @@
 package com.assessment.carritocompras.carrito.Service;
 
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,6 +37,7 @@ public class CarritoService {
             carritoRepository.deleteById(id);
             return "Shopping cart has been eliminated, ID: " + id;
         }
+        return "Shopping cart with ID: " + id + " not found";
     }
 
     public Optional<Carrito> getCartById(Long id){
@@ -42,7 +45,11 @@ public class CarritoService {
     }
 
 
-    
+    public List<Carrito> getAllCarts(){
+        List<Carrito> carts = new ArrayList<>();
+        carritoRepository.findAll().forEach(carts::add);
+        return carts;
+    }
 
 
 }

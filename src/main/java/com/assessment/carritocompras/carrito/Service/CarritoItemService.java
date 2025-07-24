@@ -8,19 +8,57 @@ import org.springframework.stereotype.Service;
 
 import com.assessment.carritocompras.Model.Carrito;
 import com.assessment.carritocompras.Model.CarritoItem;
+import com.assessment.carritocompras.Model.Productos;
 import com.assessment.carritocompras.Repository.CarritoItemRepository;
 import com.assessment.carritocompras.Repository.CarritoRepository;
+import com.assessment.carritocompras.Repository.ProductosRepository;
 
 @Service
 public class CarritoItemService {
     private final CarritoItemRepository itemRepository;
     private final CarritoRepository carritoRepository;
+    private final ProductosRepository productosRepository;
 
-    public CarritoItemService(CarritoItemRepository itemRepository, CarritoRepository carritoRepository){
+    public CarritoItemService(CarritoItemRepository itemRepository, CarritoRepository carritoRepository, ProductosRepository productosRepository){
         this.itemRepository=itemRepository;
         this.carritoRepository = carritoRepository;
+        this.productosRepository = productosRepository;
     }
     
+    public String addItemToCartById(Long cartId, CarritoItem itemBody) {
+        if (itemBody.getProducto() == null) {
+            throw new IllegalArgumentException("El campo 'producto' es nulo en el body recibido");
+        }
+        if (itemBody.getProducto().getId() == null) {
+            throw new IllegalArgumentException("El campo 'id' de producto es nulo en el body recibido");
+        }
+
+        Carrito carrito = carritoRepository.findById(cartId).orElse(null);
+        if (carrito == null) {
+            throw new IllegalArgumentException("Carrito no encontrado");
+        }
+
+        Productos producto = productosRepository.findById(itemBody.getProducto().getId()).orElse(null);
+        if (producto == null) {
+            throw new IllegalArgumentException("Producto no encontrado");
+        }
+
+        CarritoItem item = new CarritoItem();
+        item.setCarritoCompras(carrito);
+        item.setProducto(producto);
+        item.setCantidad(itemBody.getCantidad());
+        item.setPrecioUnitario(producto.getPrecio());
+        itemRepository.save(item);
+        // Calcula el total y la cantidad de productos en el carrito
+        List<CarritoItem> items = carritoRepository.findById(cartId).get().getCarritoItem();
+        int totalProductos = items.stream().mapToInt(CarritoItem::getCantidad).sum();
+        double total = items.stream().mapToDouble(i -> i.getCantidad() * i.getPrecioUnitario()).sum();
+
+        return "Se insertaron " + totalProductos + " elementos y el total es " + total;
+    }
+
+   
+
     //Obtener todos los elementos de un carrito, buscado por ID
     public List<CarritoItem> getCartAllItemsById(Long id){
         Optional<Carrito> carrito = carritoRepository.findById(id);
@@ -66,15 +104,7 @@ public class CarritoItemService {
         }
     }
 
-    public String addItemToCartById(Long cartId, CarritoItem carritoItem){
-        Optional<Carrito> carrito = carritoRepository.findById(cartId);
-        if(carrito.isPresent()){
-            carritoItem.setCarritoCompras(carrito.get());
-            itemRepository.save(carritoItem);
-            return "Item added to cart with id: " + cartId;
-        }else{
-            throw new RuntimeException("Cart not found");
-        }
-        }
+
+    
 
 }

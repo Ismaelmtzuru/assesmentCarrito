@@ -1,5 +1,6 @@
 package com.assessment.carritocompras.Model;
 
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -43,8 +44,8 @@ public class CarritoItem {
     @NotNull(message = "Quantity must be specified")
     private Integer cantidad;
 
-    @Column(name = "unit_price",precision = 10,scale = 2)
-    private Double precioUnitario;
+    @Column(name = "unit_price")
+    private double precioUnitario;
 
 
     @PrePersist
