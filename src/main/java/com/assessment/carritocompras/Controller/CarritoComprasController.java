@@ -18,7 +18,6 @@ import com.assessment.carritocompras.Model.Productos;
 import com.assessment.carritocompras.carrito.Service.CarritoItemService;
 import com.assessment.carritocompras.carrito.Service.CarritoService;
 
-import jakarta.validation.constraints.Positive;
 
 
 @RestController
