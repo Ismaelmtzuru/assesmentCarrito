@@ -18,6 +18,8 @@ import com.assessment.carritocompras.Model.Productos;
 import com.assessment.carritocompras.carrito.Service.CarritoItemService;
 import com.assessment.carritocompras.carrito.Service.CarritoService;
 
+import jakarta.validation.constraints.Positive;
+
 
 @RestController
 @RequestMapping("/shoppingCart")
@@ -57,55 +59,59 @@ public class CarritoComprasController {
     public ResponseEntity<String> deleteCartById(@PathVariable Long id){
         String result = carritoService.deleteCartById(id);
         if (result.contains("not found")){
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Shopping cart not exist");
         }
         return ResponseEntity.ok(result);
     }
 
     //Get carts with items
     @GetMapping("/cart/{id}")
-    public ResponseEntity<List<CarritoItem>> getAllCartItems(@PathVariable Long id){
-        List<CarritoItem> items = itemService.getCartAllItemsById(id);
-        if (items == null || items.isEmpty()){
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(items);
-    } 
+    public ResponseEntity<Object> getCart(@PathVariable Long id){
+    Object result = carritoService.getCartById(id); 
+    
+    if (result instanceof String && result.equals("Cart not found")){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Shopping cart not exist");
+    }
+    
+    return ResponseEntity.ok(result); 
+}
 
 
     //Empty car, not delete cart
     @DeleteMapping("/carItems/{id}")
     public ResponseEntity<String> emptyCartItemsById(@PathVariable Long id){
-        String result = itemService.deleteAllItemsFromCartById(id);
-        if(result.isEmpty() || result.isBlank()){
-            return ResponseEntity.notFound().build();
+        String result = carritoService.deleteAllItemsFromCartById(id);
+        if(result.contains("not found")){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Shopping Cart does not exists");
         }
         return ResponseEntity.ok(result);
     }
 
 
     //Obtener un elemento de un carrito de compras
-    @GetMapping("cart/{cartId}/item/{itemId}")
-    public ResponseEntity<CarritoItem> getCartItemById(@PathVariable Long cartId, @PathVariable Long itemId){
-        CarritoItem item = itemService.getItemByCartAndProductId(cartId, itemId);
-        if(item == null){
-            return ResponseEntity.notFound().build();
+    @GetMapping("/cart/{cartId}/product/{productId}")
+    public ResponseEntity<Object> getCartItemById(@PathVariable Long cartId, @PathVariable Long productId){
+        try{
+            CarritoItem item = itemService.getItemByCartAndProductId(cartId, productId);
+            return ResponseEntity.ok(item);
+        }catch (RuntimeException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
-        return ResponseEntity.ok(item);
     }
 
     //Eliminar un item de un carrito
-    @DeleteMapping("cart/{cartId}/item/{itemId}")
-    public ResponseEntity<String> deleteItemInCartById(@PathVariable Long cartId, @PathVariable Long itemId){
-        String item = itemService.deleteItemByCartAndProductId(cartId, itemId);
-        if(item == null){
-            return ResponseEntity.notFound().build();
+    @DeleteMapping("/cart/{cartId}/product/{productId}")
+    public ResponseEntity<String> deleteItemInCartById(@PathVariable Long cartId, @PathVariable Long productId){
+        try{
+            String result = itemService.deleteItemByCartAndProductId(cartId, productId);
+            return ResponseEntity.ok(result);
+        }catch (RuntimeException e){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
-        return ResponseEntity.ok(item);
     }
 
     //Añadir item a un carrito
-    @PostMapping("cart/{cartId}/item")
+    @PostMapping("/cart/{cartId}/item")
     public ResponseEntity<String> addItemToCart(@PathVariable Long cartId, @RequestBody CarritoItem itemBody){
         try {
             String newItem = itemService.addItemToCartById(cartId, itemBody);

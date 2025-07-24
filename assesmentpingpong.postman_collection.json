@@ -1,0 +1,251 @@
+{
+	"info": {
+		"_postman_id": "f7a63218-5397-4914-8ee6-ff4e95fdb4d6",
+		"name": "assesmentpingpong",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "46882034",
+		"_collection_link": "https://ismaelmartinez-8077537.postman.co/workspace/Ismael-martinez's-Workspace~912afa39-15a4-45b6-8a6c-5e97750275e5/collection/46882034-f7a63218-5397-4914-8ee6-ff4e95fdb4d6?action=share&source=collection_link&creator=46882034"
+	},
+	"item": [
+		{
+			"name": "CreateNewCart",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/shoppingCart/cart",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"shoppingCart",
+						"cart"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "addItemToCart",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"producto\": {\r\n    \"id\": 11\r\n  },\r\n  \"cantidad\": 20\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/shoppingCart/cart/3/item",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"shoppingCart",
+						"cart",
+						"3",
+						"item"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetAllItemsByCartById",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "{{democrud}}",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "user",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/shoppingCart/cart/3",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"shoppingCart",
+						"cart",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetItemOfCartByIds",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"id\": 4,\r\n  \"producto\": {\r\n    \"id\": 9,\r\n    \"nombre\": \"...\",\r\n    \"precio\": 129.99\r\n  },\r\n  \"cantidad\": 1,\r\n  \"precioUnitario\": 129.99\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/shoppingCart/cart/1/product/111",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"shoppingCart",
+						"cart",
+						"1",
+						"product",
+						"111"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetAllProducts",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/shoppingCart/allProducts",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"shoppingCart",
+						"allProducts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetAllCarts",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/shoppingCart/allCarts",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"shoppingCart",
+						"allCarts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteCarById",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/shoppingCart/cart/{id}",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"shoppingCart",
+						"cart",
+						"{id}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetCartById",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/shoppingCart/cart/{id}",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"shoppingCart",
+						"cart",
+						"{id}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "EmptyCarById",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/shoppingCart/carItems/{id}",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"shoppingCart",
+						"carItems",
+						"{id}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deleteItemInCartById",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:8080/shoppingCart/cart/{id}/product/{productid}",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"shoppingCart",
+						"cart",
+						"{id}",
+						"product",
+						"{productid}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

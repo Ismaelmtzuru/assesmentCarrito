@@ -1,6 +1,8 @@
 package com.assessment.carritocompras.Model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -32,6 +34,7 @@ public class CarritoItem {
     @ManyToOne
     @JoinColumn(name="carrito_id")
     @NotNull(message = "Cart is required")    
+    @JsonIgnore
     private Carrito carritoCompras;
 
     @ManyToOne
