@@ -1,0 +1,22 @@
+ANTES DE EJECUTAR LA APLICACIÓN:
+
+1. Crea una base de datos llamada `carritoscompras`, o bien, establece el nombre de la base de datos deseada dentro del archivo `application.properties`.
+spring.datasource.url = jdbc:mysql://localhost:3306/carritocompras
+
+
+2. Asegúrate de configurar correctamente el usuario y la contraseña de acceso a la base de datos en el mismo archivo `application.properties`.
+spring.datasource.username = {tuUsuario}
+spring.datasource.password = {tuContraseña}
+
+
+3. Para poblar la tabla de productos automáticamente al iniciar la aplicación, agrega lo siguiente en `application.properties`:
+
+   spring.sql.init.mode=always
+
+4. IMPORTANTE: Una vez que la tabla de productos haya sido poblada, cambia el valor de esa propiedad a:
+
+   spring.sql.init.mode=never
+
+   Esto evitará reiniciar o duplicar datos en cada ejecución.
+
+NO OMITAS ESTOS PASOS PARA EVITAR ERRORES EN LA CARGA INICIAL DE DATOS.
